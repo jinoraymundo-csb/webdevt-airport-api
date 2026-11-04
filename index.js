@@ -40,9 +40,22 @@ app.route("/airports/")
   })
 
 app.route("/airports/:code")
-  .get(async (req, res) => {})
-  .put(async (req, res) => {})
-  .delete(async (req, res) => {})
+  .get(async (req, res) => {
+    const airport = await airportModel.readAirport(req.params.code)
+    res.send(airport)
+  })
+  .put(async (req, res) => {
+    await airportModel.updateAirport(
+      req.params.code,
+      req.body.name,
+      req.body.country      
+    )
+    res.send({"message": `Airport ${req.params.code} updated successfully!`})
+   })
+  .delete(async (req, res) => {
+    await airportModel.deleteAirport(req.params.code)
+    res.send({"message": `Airport ${req.params.code} deleted successfully!`})
+   })
 
 
 server.listen(3000, () => {
